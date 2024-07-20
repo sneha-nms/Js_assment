@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div id="product-list">
+        <h1>Product List</h1>
+        
+    </div>
+    <canvas id="canvas">
+    
+    </canvas>
+    <div>
+        <h2>Top High Quantity Products</h2>
+        <div id="high_product">
+            <button id="add-product" type="button" > add to data </button>
+            <input type="text" id="new-product" placeholder="Product Name">
+            <input type="number" id="new-quantity" placeholder="Quantity">
+
+        </div>
+    </div>
+    <script >
+     fetch('./product.json')
+     .then(response => response.json())
+     .then(data => {
+        console.log(data);
+        const productList = document.getElementById('product-list');
+        data.forEach(product => {
+          const li = document.createElement('li');
+          li.textContent = `${product.product} - ${product.quantity}`;
+          productList.appendChild(li);
+        });
+        //display the quantity  top high  3 only display the div quantity
+        const highQuantityProducts = data.filter(product => product.quantity > 4);
+        highQuantityProducts.forEach(product => {
+          const productList_high = document.getElementById('high_product');
+          const li = document.createElement('li');
+          li.textContent = `${product.product} - ${product.quantity}`;
+          productList_high.appendChild(li);
+          highQuantityProducts.length > 0 ? productList_high.style.display = 'block' : productList_high.style.display = 'none';
+        });
+        //add product to data
+        document.getElementById('add-product').addEventListener('click', function() {
+          const productName = document.getElementById('new-product').value;
+          const quantity = document.getElementById('new-quantity').value;
+          if(productName && quantity) {
+            data.push({ product: productName, quantity: parseInt(quantity) });
+            document.getElementById('product-list').innerHTML = '';
+            data.forEach(product => {
+              const li = document.createElement('li');
+              li.textContent = `${product.product} - ${product.quantity}`;
+              productList.appendChild(li);
+            });
+            //display the quantity  top high  3 only display the div quantity
+            // const highQuantityProducts = data.filter(product => product.quantity > 4);
+            // highQuantityProducts.forEach(product => {
+            //     const productList_high = document.getElementById('high_product');
+            //     const li = document.createElement('li');
+            //     li.textContent = `${product.product} - ${product.quantity}`;
+            //     productList_high.appendChild(li);
+            //     highQuantityProducts.length > 0? productList_high.style.display = 'block' : productList_high.style.display = 'none';
+            //   });
+        } else {
+          alert('Please enter product name and quantity');
+        }
+              
+
+        
+   
+      } );
+          
+
+
+
+        
+        
+        
+        
+        
+
+  
+   
+
+     
+
+     
+
+        
+}); 
+      
+        
+        
+        
+     
+       
+
+
+
+     
+    
+    bitmap(file="out.png")
+
+
+x = ("A", "B", "C", "D")
+
+
+y =  (2, 4, 6, 8)
+
+barplot(y, names.arg = x)
+    
+
+    </script>
+
+    
+<!-- </body>
+</html>
+<!DOCTYPE html>
+<html>
+<head>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+
+<canvas id="myChart"></canvas>
+
+<div id="inventoryStatus"></div>
+
+<script>
+// Existing chart code
+var xValues = ["Italy", "France", "Spain", "USA", "Argentina"];
+var yValues = [55, 49, 44, 24, 15];
+var barColors = ["red", "green", "blue", "orange", "brown"];
+
+new Chart("myChart", {
+  type: "bar",
+  data: {
+    labels: xValues,
+    datasets: [{
+      backgroundColor: barColors,
+      data: yValues
+    }]
+  },
+  options: {
+    legend: { display: false },
+    title: {
+      display: true,
+      text: "World Wine Production 2018"
+    }
+  }
+});
+
+// Function to display inventory status
+const displayInventoryStatus = (products) => {
+  const inventoryStatus = document.getElementById('inventoryStatus');
+  const ctx = document.createElement('canvas');
+  
+  ctx.id = 'inventoryStatusChart';
+  inventoryStatus.innerHTML = '<h2>Inventory Status</h2>';
+  
+  inventoryStatus.appendChild(ctx);
+  
+  const chartData = {
+    labels: products.map(p => p.name),
+    datasets: [{
+      label: 'Quantity',
+      data: products.map(p => p.quantity),
+      backgroundColor: ['#4CAF50', '#FF6384', '#36A2EB', '#FFCE56', '#8E44AD', '#E67E22']
+    }]
+  };
+  
+  new Chart(ctx, { // Use ctx instead of "inventoryStatusChart"
+    type: 'bar',
+    data: chartData
+  });
+};
+
+// Example usage of the function
+const products = [
+  { name: 'Product A', quantity: 10 },
+  { name: 'Product B', quantity: 5 },
+  { name: 'Product C', quantity: 8 },
+  { name: 'Product D', quantity: 3 },
+  { name: 'Product E', quantity: 6 }
+];
+
+displayInventoryStatus(products);
+
+</script>
+
+</body>
+</html> -->
+<!DOCTYPE html>
+<html>
+<head>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+
+<canvas id="myChart"></canvas>
+<div id="inventoryStatus"></div>
+
+<!-- Modals -->
+<div id="addProductModal" class="modal">
+  <!-- Modal content -->
+  <div class="modal-content">
+    <span class="close">&times;</span>
+    <form id="addProductForm">
+      <label for="product-name">Product Name:</label>
+      <input type="text" id="product-name" name="product-name">
+      <label for="product-quantity">Quantity:</label>
+      <input type="number" id="product-quantity" name="product-quantity">
+      <button type="submit">Add Product</button>
+    </form>
+  </div>
+</div>
+
+<div id="updateInventoryModal" class="modal">
+  <!-- Modal content -->
+  <div class="modal-content">
+    <span class="close">&times;</span>
+    <form id="updateInventoryForm">
+      <label for="product-name-update">Product Name:</label>
+      <input type="text" id="product-name-update" name="product-name-update">
+      <label for="recipient-name">Recipient Name:</label>
+      <input type="text" id="recipient-name" name="recipient-name">
+      <label for="product-quantity-update">Quantity:</label>
+      <input type="number" id="product-quantity-update" name="product-quantity-update">
+      <button type="submit">Update Inventory</button>
+    </form>
+  </div>
+</div>
+
+<!-- Inventory Tables -->
+<h2>Products</h2>
+<table id="productsTable">
+  <thead>
+    <tr>
+      <th>Product Name</th>
+      <th>Quantity</th>
+    </tr>
+  </thead>
+  <tbody></tbody>
+</table>
+
+<h2>Recipients</h2>
+<table id="recipientsTable">
+  <thead>
+    <tr>
+      <th>Product</th>
+      <th>Recipient</th>
+      <th>Quantity</th>
+    </tr>
+  </thead>
+  <tbody></tbody>
+</table>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+// Existing chart code
+var xValues = ["Italy", "France", "Spain", "USA", "Argentina"];
+var yValues = [55, 49, 44, 24, 15];
+var barColors = ["red", "green", "blue", "orange", "brown"];
+
+new Chart("myChart", {
+  type: "bar",
+  data: {
+    labels: xValues,
+    datasets: [{
+      backgroundColor: barColors,
+      data: yValues
+    }]
+  },
+  options: {
+    legend: { display: false },
+    title: {
+      display: true,
+      text: "World Wine Production 2018"
+    }
+  }
+});
+
+// Inventory data
+let inventoryData = {
+  products: [
+    { name: 'Books', quantity: 45 },
+    { name: 'Rhino Toys', quantity: 40 },
+    { name: 'Bags', quantity: 30 },
+    { name: 'Laptops', quantity: 25 },
+    { name: 'Chargers', quantity: 20 },
+    { name: 'Mouse', quantity: 10 },
+  ],
+  recipients: [
+    { product: 'Bag', recipient: 'Senthil', quantity: 1 },
+    { product: 'Toy', recipient: 'Senthil', quantity: 1 },
+    { product: 'Laptop', recipient: 'Naveen', quantity: 1 },
+    { product: 'Charger', recipient: 'Naveen', quantity: 1 },
+    { product: 'Laptop', recipient: 'Batch 3 Students', quantity: 14 },
+    { product: 'Bag', recipient: 'Batch 3 Students', quantity: 14 }
+  ]
+};
+
+// Function to display inventory status
+const displayInventoryStatus = (inventoryData) => {
+  const inventoryStatus = document.getElementById('inventoryStatus');
+  const ctx = document.createElement('canvas');
+  
+  ctx.id = 'inventoryStatusChart';
+  inventoryStatus.innerHTML = '<h2>Inventory Status</h2>';
+  
+  inventoryStatus.appendChild(ctx);
+  
+  const chartData = {
+    labels: inventoryData.products.map(p => p.name),
+    datasets: [{
+      label: 'Quantity',
+      data: inventoryData.products.map(p => p.quantity),
+      backgroundColor: ['#4CAF50', '#FF6384', '#36A2EB', '#FFCE56', '#8E44AD', '#E67E22']
+    }]
+  };
+  
+  new Chart(ctx, {
+    type: 'bar',
+    data: chartData
+  });
+};
+
+// Function to update products table
+const updateProductsTable = (products) => {
+  const productsTableBody = document.getElementById('productsTable').getElementsByTagName('tbody')[0];
+  productsTableBody.innerHTML = ''; // Clear existing rows
+  products.forEach(product => {
+    const row = productsTableBody.insertRow();
+    const cell1 = row.insertCell(0);
+    const cell2 = row.insertCell(1);
+    cell1.textContent = product.name;
+    cell2.textContent = product.quantity;
+  });
+};
+
+// Function to update recipients table
+const updateRecipientsTable = (recipients) => {
+  const recipientsTableBody = document.getElementById('recipientsTable').getElementsByTagName('tbody')[0];
+  recipientsTableBody.innerHTML = ''; // Clear existing rows
+  recipients.forEach(recipient => {
+    const row = recipientsTableBody.insertRow();
+    const cell1 = row.insertCell(0);
+    const cell2 = row.insertCell(1);
+    const cell3 = row.insertCell(2);
+    cell1.textContent = recipient.product;
+    cell2.textContent = recipient.recipient;
+    cell3.textContent = recipient.quantity;
+  });
+};
+
+// Function to save data (stub for actual saving logic)
+const saveData = (data) => {
+  // Save data logic here
+  console.log('Data saved:', data);
+};
+
+// Function to initialize tables and charts
+const init = () => {
+  updateProductsTable(inventoryData.products);
+  updateRecipientsTable(inventoryData.recipients);
+  displayInventoryStatus(inventoryData);
+};
+
+// Event listener for updating inventory
+const updateInventoryForm = document.getElementById('updateInventoryForm');
+updateInventoryForm.addEventListener('submit', (e) => {
+  e.preventDefault();
+  const productName = e.target['product-name-update'].value;
+  const recipientName = e.target['recipient-name'].value;
+  const productQuantity = parseInt(e.target['product-quantity-update'].value);
+
+  const existingProduct = inventoryData.products.find(p => p.name.toLowerCase() === productName.toLowerCase());
+  if (existingProduct && existingProduct.quantity >= productQuantity) {
+    existingProduct.quantity -= productQuantity;
+    inventoryData.recipients.push({ product: productName, recipient: recipientName, quantity: productQuantity });
+
+    saveData(inventoryData);
+    init();
+    closeModal(updateInventoryModal);
+  } else {
+    alert('Not enough quantity available or product does not exist.');
+  }
+});
+
+// Function to close modal
+const closeModal = (modal) => {
+  modal.style.display = 'none';
+};
+
+// Event listeners for modal closing
+window.onclick = (event) => {
+  if (event.target === addProductModal) {
+    closeModal(addProductModal);
+  } else if (event.target === updateInventoryModal) {
+    closeModal(updateInventoryModal);
+  }
+};
+
+// Initialize tables and charts on page load
+init();
+
+</script>
+
+</body>
+</html>
+
+
+
